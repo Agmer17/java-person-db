@@ -17,8 +17,8 @@ public interface RepoInterface {
 
     Person find(int id);
 
-    Person edit(String name);
+    Person edit(Person newObject);
 
-    Person edit(int id);
+    ArrayList<Person> findAllByName(String query);
 
 }

@@ -79,7 +79,7 @@ public class RepoPersonImpl implements RepoInterface {
 
     @Override
     public ArrayList<Person> getAll() {
-        ArrayList<Person> result = new ArrayList<>(50);
+        ArrayList<Person> result = null;
         try (
                 Connection connection = this.dataSource.getConnection();
                 Statement statement = connection.createStatement();) {
@@ -87,14 +87,7 @@ public class RepoPersonImpl implements RepoInterface {
             String SQLquery = "SELECT * FROM PERSON";
             ResultSet resultData = statement.executeQuery(SQLquery);
 
-            while (resultData.next()) {
-                int id = resultData.getInt("id");
-                String name = resultData.getString("nama");
-                int umur = resultData.getInt("umur");
-                String gendeString = resultData.getString("gender");
-
-                result.add(new Person(id, name, umur, gendeString));
-            }
+            result = this.resultToArrayList(resultData);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -104,26 +97,84 @@ public class RepoPersonImpl implements RepoInterface {
 
     @Override
     public Person find(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'find'");
+        String sqlQuery = "SELECT * FROM PERSON WHERE nama = ?";
+        try (
+                Connection connection = this.dataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+            statement.setString(1, name);
+            ResultSet resultData = statement.executeQuery();
+            return this.dataToObject(resultData);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public Person find(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'find'");
+        return null;
     }
 
     @Override
-    public Person edit(String name) {
+    public Person edit(Person newPerson) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'edit'");
     }
 
     @Override
-    public Person edit(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'edit'");
+    public ArrayList<Person> findAllByName(String query) {
+        ArrayList<Person> result = null;
+        String sqlQuery = "SELECT * FROM PERSON WHERE nama LIKE ?";
+
+        try (
+                Connection connection = this.dataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sqlQuery);) {
+            statement.setString(1, String.format("%%%s%%", query));
+            ResultSet queryResult = statement.executeQuery();
+            result = this.resultToArrayList(queryResult);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private Person dataToObject(ResultSet result) {
+        Person person = null;
+
+        try {
+            while (result.next()) {
+                int id = result.getInt("id");
+                String name = result.getString("nama");
+                int umur = result.getInt("umur");
+                String gendeString = result.getString("gender");
+                person = new Person(id, name, umur, gendeString);
+            }
+            return person;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    private ArrayList<Person> resultToArrayList(ResultSet resultData) {
+        ArrayList<Person> result = new ArrayList<>(50);
+        try {
+            while (resultData.next()) {
+                int id = resultData.getInt("id");
+                String name = resultData.getString("nama");
+                int umur = resultData.getInt("umur");
+                String gendeString = resultData.getString("gender");
+
+                result.add(new Person(id, name, umur, gendeString));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
 }

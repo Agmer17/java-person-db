@@ -1,5 +1,7 @@
 package src;
 
+import java.util.ArrayList;
+
 // import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.AfterEach;
@@ -46,6 +48,18 @@ public class RepoTest {
     void deleteData() {
         var numberEffected = personRepo.remove("hapus");
         System.out.println(numberEffected);
+    }
+
+    @Test
+    void findByName() {
+        var person = this.personRepo.find("elaina");
+        System.out.println(person);
+    }
+
+    @Test
+    void findByAllByName() {
+        ArrayList<Person> person = this.personRepo.findAllByName("ri");
+        person.forEach(System.out::println);
     }
 
     // @AfterEach
