@@ -1,6 +1,6 @@
 package src;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+// import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,14 +26,31 @@ public class RepoTest {
 
     @Test
     void addPersonTest() {
-        Person newPerson = new Person("agmer", 17, Gender.genderFromLabel("Laki-laki"));
+        Person newPerson = new Person("hapus", 19, Gender.genderFromLabel("perempuan"));
         personRepo.add(newPerson);
-
     }
 
-    @AfterEach
-    void Teardown() {
-        dataSource.close();
+    @Test
+    void printAllData() {
+        var personList = personRepo.getAll();
+        personList.forEach(System.out::println);
     }
+
+    @Test
+    void deleteDataId() {
+        int rowAffected = personRepo.remove(58);
+        System.out.println(rowAffected);
+    }
+
+    @Test
+    void deleteData() {
+        var numberEffected = personRepo.remove("hapus");
+        System.out.println(numberEffected);
+    }
+
+    // @AfterEach
+    // void Teardown() {
+    // dataSource.close();
+    // }
 
 }

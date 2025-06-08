@@ -13,4 +13,12 @@ public interface RepoInterface {
 
     ArrayList<Person> getAll();
 
+    Person find(String name);
+
+    Person find(int id);
+
+    Person edit(String name);
+
+    Person edit(int id);
+
 }
