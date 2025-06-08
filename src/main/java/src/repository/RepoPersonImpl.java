@@ -117,9 +117,22 @@ public class RepoPersonImpl implements RepoInterface {
     }
 
     @Override
-    public Person edit(Person newPerson) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'edit'");
+    public void edit(Person newPerson) {
+        String SqlString = "UPDATE person SET nama = ?, umur = ?, gender = ? WHERE id = ?";
+        try (
+                Connection connection = this.dataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SqlString);) {
+            statement.setString(1, newPerson.getName());
+            statement.setString(2, String.valueOf(newPerson.getAge()));
+            statement.setString(3, newPerson.getGender());
+            statement.setString(4, String.valueOf(newPerson.getId()));
+
+            statement.executeUpdate();
+            System.out.println("berhasil mengupdate DATA!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 // import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.AfterEach;
+// import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -60,6 +60,13 @@ public class RepoTest {
     void findByAllByName() {
         ArrayList<Person> person = this.personRepo.findAllByName("ri");
         person.forEach(System.out::println);
+    }
+
+    @Test
+    void editDataTest() {
+        // 54 | alya | 17 | Perempuan |
+        Person editedData = new Person(54, "alya", 19, "Perempuan");
+        this.personRepo.edit(editedData);
     }
 
     // @AfterEach
