@@ -1,7 +1,12 @@
 package src;
 
+import src.views.ViewsImpl;
+
 public class App {
+
     public static void main(String[] args) {
-        System.out.println("test");
+        ViewsImpl views = new ViewsImpl();
+        views.mainMenu();
+
     }
 }

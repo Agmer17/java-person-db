@@ -113,6 +113,17 @@ public class RepoPersonImpl implements RepoInterface {
 
     @Override
     public Person find(int id) {
+        String sqlQuery = "SELECT * FROM PERSON WHERE id = ?";
+        try (
+                Connection connection = this.dataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+            statement.setString(1, String.valueOf(id));
+            ResultSet resultData = statement.executeQuery();
+            return this.dataToObject(resultData);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

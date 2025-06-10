@@ -1,5 +1,7 @@
 package src.service;
 
+import src.entity.Person;
+
 public interface PersonService {
     void printAllData();
 
@@ -7,9 +9,9 @@ public interface PersonService {
 
     void addData(String name, int age, String gender);
 
-    void findData();
+    Person findData(String data);
 
-    void findAllData();
+    void findAllData(String query);
 
-    void editData();
+    void editData(Person oldPerson, String newName, int age, String gender);
 }

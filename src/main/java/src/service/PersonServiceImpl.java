@@ -1,5 +1,7 @@
 package src.service;
 
+import java.util.ArrayList;
+
 import src.entity.Gender;
 import src.entity.Person;
 import src.repository.RepoPersonImpl;
@@ -13,8 +15,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void printAllData() {
-        repo.getAll().forEach(data -> System.out.printf("%d | %s | %d | %s |\n",
-                data.getId(), data.getName(), data.getAge(), data.getGender()));
+        repo.getAll().forEach(System.out::println);
     }
 
     @Override
@@ -53,21 +54,40 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void findData() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findData'");
+    public Person findData(String data) {
+        if (!this.verifiedStringAndNumber(data)) {
+            System.out.println("data yang dimasukkan gak valid");
+            return null;
+        }
+
+        try {
+            int personId = Integer.valueOf(data);
+            return this.repo.find(personId);
+        } catch (NumberFormatException e) {
+            return this.repo.find(data);
+        }
     }
 
     @Override
-    public void findAllData() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAllData'");
+    public void findAllData(String query) {
+        ArrayList<Person> resultData = this.repo.findAllByName(query);
+        resultData.forEach(System.out::println);
     }
 
     @Override
-    public void editData() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'editData'");
+    public void editData(Person oldPerson, String newName, int age, String gender) {
+        if (!this.verifiedStringAndNumber(newName, age, gender)) {
+            System.out.println("Data baru yang dimasukkan gak valid! operasi gagal");
+            return;
+        }
+
+        if (!this.genderVerify(gender)) {
+            System.out.println("Gender hanya ada laki-laki dan perempuan");
+            return;
+        }
+        Person newPersonData = new Person(oldPerson.getId(), newName, age, gender);
+        this.repo.edit(newPersonData);
+        System.out.println("Data berhasil dirubah!");
     }
 
     @SafeVarargs
@@ -93,6 +113,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     private boolean genderVerify(String gender) {
+        // klo gendernya bener return true
         return gender.equalsIgnoreCase("perempuan") || gender.equalsIgnoreCase("Laki-laki");
     }
 
