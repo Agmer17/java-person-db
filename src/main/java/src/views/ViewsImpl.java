@@ -103,8 +103,13 @@ public class ViewsImpl implements Views {
 
     @Override
     public void removePersonMenu() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removePersonMenu'");
+        this.clearScreen();
+        System.out.println("=== HAPUS DATA ===");
+        this.service.printAllData();
+        System.out.print("Masukan (nama/id) dari data yang ingin dihapus :\n>");
+        String deletedQuery = userInput.nextLine();
+        this.service.deleteData(deletedQuery);
+        this.enterToBack();
     }
 
     @Override
@@ -120,6 +125,7 @@ public class ViewsImpl implements Views {
         System.out.print("Masukan query nama perncarian :\n>");
         String query = userInput.nextLine();
         this.service.findAllData(query);
+        this.enterToBack();
     }
 
     private void enterToBack() {
